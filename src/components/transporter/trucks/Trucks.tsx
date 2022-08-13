@@ -66,7 +66,6 @@ const Trucks = (): JSX.Element => {
                         </Row>
                     </Container>
                 </div>
-
             </header>
             <Footer />
 
