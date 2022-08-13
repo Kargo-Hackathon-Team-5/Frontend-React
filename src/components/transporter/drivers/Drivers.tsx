@@ -2,6 +2,7 @@ import TopNavBar from '../../Navbar';
 import Footer from '../../Footer';
 import { useEffect, useState } from 'react';
 import { Button, Col, Container, Dropdown, Row, Table } from 'react-bootstrap';
+import Moment from 'react-moment';
 
 const backStyle = {
     backgroundImage: "url('https://thumbs.dreamstime.com/b/american-style-truck-freeway-pulling-load-transportation-theme-road-cars-174771780.jpg')",
@@ -68,7 +69,12 @@ const Drivers = (): JSX.Element => {
                                             <tr>
                                                 <td onClick={() => setModalDetail(true)} style={{ cursor: "pointer" }}>{x.driver_name}</td>
                                                 <td>{x.phone_number}</td>
-                                                <td>{x.created_at}</td>
+                                                <td>
+                                                    <Moment format="D MMM YYYY">
+                                                        {x.created_at}
+                                                    </Moment>
+
+                                                </td>
                                                 <td>
                                                     {x.status ? 'Active' : 'Inactive'}
                                                 </td>
