@@ -22,7 +22,6 @@ const Trucks = (): JSX.Element => {
                     <hr />
 
                 </div>
-
             </header>
             <Footer />
 
