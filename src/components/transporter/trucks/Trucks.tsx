@@ -1,7 +1,7 @@
 import Footer from '../../Footer';
 import TopNavBar from '../../Navbar';
 import { useState } from 'react';
-import { Table, Container, Row, Col, Dropdown, Modal } from "react-bootstrap";
+import { Table, Container, Row, Col, Button, Modal } from "react-bootstrap";
 
 const backStyle = {
     backgroundImage: "url('https://thumbs.dreamstime.com/b/american-style-truck-freeway-pulling-load-transportation-theme-road-cars-174771780.jpg')",
@@ -12,10 +12,25 @@ const backStyle = {
 };
 
 
+interface Truck {
+    license_number: string;
+    truck_type: string;
+    plate_type: string;
+    production_year: string;
+    status: boolean;
+    stnk: string;
+    kir: string;
+}
 
-const Trucks = (): JSX.Element => {
-    const [dropdown, setDropdown] = useState<string>('Update');
+
+const Trucks = (): JSX.Element => {    
     const [modal_detail, setModalDetail] = useState<boolean>(false);
+    const [modal_data_index, setModalDataIndex] = useState<number>(0)
+
+    const handleModal = (status: boolean, index: number) => {
+        setModalDetail(status)        
+        setModalDataIndex(index)
+    }
 
     return (
         <>
@@ -23,7 +38,7 @@ const Trucks = (): JSX.Element => {
             <header className="App-header w-100 vh-100" style={backStyle}>
                 <div className='h-75 w-75 bg-light rounded'>
                     <h2 className='py-2 text-dark'>  Trucks </h2>
-                    <hr />
+                    <hr />                    
                     <Container>
                         <Row>
                             <Col lg="12">
@@ -39,27 +54,22 @@ const Trucks = (): JSX.Element => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td onClick={() => setModalDetail(true)} style={{ cursor: "pointer" }}>L 1234 VO</td>
-                                        <td>Container</td>
-                                        <td>Yellow</td>
-                                        <td>2022</td>
-                                        <td>
-                                            Active
-                                        </td>
-                                        <td>
-                                        <Dropdown>
-                                            <Dropdown.Toggle variant="secondary" id="dropdown-basic">
-                                                {dropdown}
-                                            </Dropdown.Toggle>
-
-                                            <Dropdown.Menu>
-                                                <Dropdown.Item onClick={() => setDropdown('Update')}>Update</Dropdown.Item>
-                                                <Dropdown.Item onClick={() => setDropdown('Add')}>Add</Dropdown.Item>                                                                                                
-                                            </Dropdown.Menu>
-                                        </Dropdown>
-                                        </td>
-                                    </tr>                                    
+                                    {dummyTruck.map((truck: Truck, index: number) => {
+                                      return(
+                                        <tr key={index}>
+                                            <td style={{ cursor: "pointer" }} onClick={() => handleModal(true, index)}>{truck.license_number}</td>
+                                            <td>{truck.truck_type}</td>
+                                            <td>{truck.plate_type}</td>
+                                            <td>{truck.production_year}</td>
+                                            <td>{truck.status ? 'Active' : 'Inactive'}</td>
+                                            <td>
+                                                <Button>
+                                                    Update
+                                                </Button>
+                                            </td>
+                                        </tr>
+                                      )  
+                                    })}                                    
                                 </tbody>
                                 </Table>
                             </Col>
@@ -84,23 +94,23 @@ const Trucks = (): JSX.Element => {
                         <Col lg="6">
                             <Row>
                                 <h5>License Number</h5>
-                                <p>L 1234 VO</p>
+                                <p>{dummyTruck[modal_data_index].license_number}</p>
                             </Row>
                             <Row>
                                 <h5>Truck Type</h5>
-                                <p>Container</p>
+                                <p>{dummyTruck[modal_data_index].truck_type}</p>
                             </Row>
                             <Row>
                                 <h5>Plate Type</h5>
-                                <p>Yellow</p>
+                                <p>{dummyTruck[modal_data_index].plate_type}</p>
                             </Row>
                             <Row>
                                 <h5>Production Year</h5>
-                                <p>2022</p>
+                                <p>{dummyTruck[modal_data_index].production_year}</p>
                             </Row>
                             <Row>
                                 <h5>Status</h5>
-                                <p>Active</p>
+                                <p>{dummyTruck[modal_data_index].status}</p>
                             </Row>
                         </Col>
                         <Col lg="6">
@@ -123,5 +133,27 @@ const Trucks = (): JSX.Element => {
 
     );
 }
+
+const dummyTruck: Truck[] = [
+    {
+        license_number: 'L 1234 VO',
+        truck_type: 'Container',
+        plate_type: 'Yellow',
+        production_year: '2022',
+        status: true,
+        stnk: 'Image Here',
+        kir: 'Image Here'
+    },
+    {
+        license_number: 'L 1234 BO',
+        truck_type: 'Container',
+        plate_type: 'Black', 
+        production_year: '2021',
+        status: true,
+        stnk: 'Image Here',
+        kir: 'Image Here'
+    }
+
+]
 
 export default Trucks;
