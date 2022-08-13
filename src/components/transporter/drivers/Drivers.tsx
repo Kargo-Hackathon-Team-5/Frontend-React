@@ -1,7 +1,7 @@
 import TopNavBar from '../../Navbar';
 import Footer from '../../Footer';
 import { useEffect, useState } from 'react';
-import { Button, Col, Container, Dropdown, Row, Table } from 'react-bootstrap';
+import { Button, Col, Container, Dropdown, Modal, Row, Table } from 'react-bootstrap';
 import Moment from 'react-moment';
 
 const backStyle = {
@@ -27,19 +27,99 @@ interface Driver {
 
 const Drivers = (): JSX.Element => {
     const [search, setSearch] = useState<string>('')
+
+    const [imageCardId, setImageCardId] = useState<File | null>(null);
+    const [imageLicense, setImageLicense] = useState<File | null>(null);
+    const [drivers, setDrivers] = useState<Driver[]>([]);
+    const [filteredDrivers, setFilteredDrivers] = useState<Driver[]>([]);
+    const [dropdown, setDropdown] = useState<string>('Update');
+    const [modalAdd, setModalAdd] = useState<boolean>(false);
+    const [modalEdit, setModalEdit] = useState<boolean>(false);
+    const [modalDisplay, setModalDisplay] = useState<boolean>(false);
+
+
     const onSearchChange = (e: any): void => {
         setSearch(e.target.value)
+        if (e.target.value) {
+            setFilteredDrivers(drivers.filter(x => (x.driver_name.toLowerCase().includes(e.target.value.toLowerCase()))))
+        } else {
+            setFilteredDrivers(drivers)
+        }
     };
-    const [drivers, setDrivers] = useState<Driver[]>([]);
-    const [dropdown, setDropdown] = useState<string>('Update');
-    const [modal_detail, setModalDetail] = useState<boolean>(false);
+    const onClickModal = (driver: null | Driver, target: string) => {
+        if (driver) {
+            setFormData(driver);
+        }
 
-    const onClick = () => {
-        console.log("Update");
+        if (target == 'add') {
+            setModalAdd(true)
+            setModalEdit(false)
+            setModalDisplay(false)
+        }
+        else if (target == 'edit') {
+            setModalAdd(false)
+            setModalEdit(true)
+            setModalDisplay(false)
+        }
+        else {
+            setModalAdd(false)
+            setModalEdit(false)
+            setModalDisplay(true)
+        }
     }
+
+
+    const [formData, setFormData] = useState<Driver>({
+        id: '',
+        created_at: '',
+        driver_name: '',
+        phone_number: '',
+        id_card: '',
+        driver_license: '',
+        status: false
+    })
+
+    const { id, created_at, driver_name, phone_number, id_card, driver_license, status } = formData
+
+    const onAdd = () => {
+        setFormData(formData => ({
+            ...formData,
+            id_card: 'https://iskconofescondido.com/wp-content/uploads/2019/03/FAKE-KTP.jpg',
+            driver_license: 'https://i.pinimg.com/originals/7f/7f/68/7f7f68a2ae2a33c4c67d10234cc7bb37.jpg',
+            status: true
+        }))
+        // Add axios post
+        console.log(({
+            ...formData,
+            id_card: 'https://iskconofescondido.com/wp-content/uploads/2019/03/FAKE-KTP.jpg',
+            driver_license: 'https://i.pinimg.com/originals/7f/7f/68/7f7f68a2ae2a33c4c67d10234cc7bb37.jpg',
+            status: true
+        }));
+    }
+
+    const onEdit = () => {
+        setFormData(formData => ({
+            ...formData,
+            id_card: 'https://iskconofescondido.com/wp-content/uploads/2019/03/FAKE-KTP.jpg',
+            driver_license: 'https://i.pinimg.com/originals/7f/7f/68/7f7f68a2ae2a33c4c67d10234cc7bb37.jpg',
+            status: true
+        }))
+        // Add axios post
+        console.log(({
+            ...formData,
+            id_card: 'https://iskconofescondido.com/wp-content/uploads/2019/03/FAKE-KTP.jpg',
+            driver_license: 'https://i.pinimg.com/originals/7f/7f/68/7f7f68a2ae2a33c4c67d10234cc7bb37.jpg',
+            status: true
+        }));
+    }
+
     useEffect(() => {
         setDrivers(dummyDrivers);
+        setFilteredDrivers(dummyDrivers)
     }, [])
+    const onChange = (e: any): void => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
     return (
         <>
             <TopNavBar type='transporter' />
@@ -47,9 +127,19 @@ const Drivers = (): JSX.Element => {
                 <div className='h-75 w-75 bg-light rounded'>
                     <h2 className='py-2 text-dark'>  Drivers </h2>
                     <hr />
-                    <div className="form-group w-25 mx-auto my-4">
-                        <input type="text" onChange={onSearchChange} value={search} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Search" />
-                    </div>
+                    <Row className='justify-content-end my-4'>
+                        <Col lg="auto">
+                            <Button onClick={() => { onClickModal(null, 'add') }} className='w-auto' variant="primary" type="submit" style={{ fontSize: '1rem' }}>
+                                Add
+                            </Button>
+                        </Col>
+                        <Col lg={5}>
+                            <div className="form-group w-50 mx-auto mt-2">
+                                <input type="text" onChange={onSearchChange} value={search} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Search" />
+                            </div>
+                        </Col>
+                    </Row>
+
                     <Container style={{ fontSize: '1.3rem' }}>
                         <Row>
                             <Col lg="12">
@@ -64,10 +154,10 @@ const Drivers = (): JSX.Element => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {drivers && drivers.map(x => (<>
+                                        {filteredDrivers && filteredDrivers.map(x => (<>
 
                                             <tr>
-                                                <td onClick={() => setModalDetail(true)} style={{ cursor: "pointer" }}>{x.driver_name}</td>
+                                                <td onClick={() => { onClickModal(x, 'display') }} style={{ cursor: "pointer" }}>{x.driver_name}</td>
                                                 <td>{x.phone_number}</td>
                                                 <td>
                                                     <Moment format="D MMM YYYY">
@@ -79,7 +169,7 @@ const Drivers = (): JSX.Element => {
                                                     {x.status ? 'Active' : 'Inactive'}
                                                 </td>
                                                 <td>
-                                                    <Button onClick={onClick} className='w-auto' variant="warning" type="submit" style={{ fontSize: '1rem' }}>
+                                                    <Button onClick={() => { onClickModal(x, 'edit') }} className='w-auto' variant="warning" type="submit" style={{ fontSize: '1rem' }}>
                                                         Update
                                                     </Button>
                                                 </td>
@@ -92,6 +182,192 @@ const Drivers = (): JSX.Element => {
                             </Col>
                         </Row>
                     </Container>
+
+                    {/* MODAL FOR ADD */}
+                    <Modal
+                        show={modalAdd}
+                        onHide={() => setModalAdd(false)}
+                        backdrop="static"
+                        keyboard={false}
+                    >
+                        <Modal.Header closeButton>
+                            <Modal.Title>Add Driver</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <Container>
+                                <Row className='justify-content-center'>
+                                    <Col lg="10">
+                                        <Row className='my-2'>
+                                            <label htmlFor="exampleInputEmail1">Driver Name</label>
+                                            <input type="text" name='driver_name' value={driver_name} onChange={e => { onChange(e) }} className="form-control" id="exampleInputEmail1" placeholder="Name" />
+                                        </Row>
+                                        <Row>
+                                            <label htmlFor="exampleInputEmail1">Phone Number</label>
+                                            <input type="text" name='phone_number' value={phone_number} onChange={e => { onChange(e) }} className="form-control" id="exampleInputEmail1" placeholder="Phone" />
+                                        </Row>
+                                        <Row className='my-2'>
+                                            <label
+                                                className="block text-gray-700 text-md font-bold mb-2 ml-2"
+                                                htmlFor="image"
+                                            >
+                                                ID Card
+                                            </label>
+                                            <input
+                                                id="image"
+                                                onChange={(e) => setImageCardId(e.target.files ? e.target.files[0] : null)}
+                                                className="block w-full text-md text-white bg-gray-800 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 ml-2"
+                                                type="file"
+                                            />
+                                            <p
+                                                className="mt-1 text-sm text-gray-500 ml-2"
+                                                id="file_input_help"
+                                            >
+                                                SVG, PNG, or JPG.
+                                            </p>
+                                        </Row>
+                                        <Row className='my-2'>
+                                            <label
+                                                className="block text-gray-700 text-md font-bold mb-2 ml-2"
+                                                htmlFor="image"
+                                            >
+                                                Driver License
+                                            </label>
+                                            <input
+                                                id="image"
+                                                onChange={(e) => setImageLicense(e.target.files ? e.target.files[0] : null)}
+                                                className="block w-full text-md text-white bg-gray-800 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 ml-2"
+                                                type="file"
+                                            />
+                                            <p
+                                                className="mt-1 text-sm text-gray-500 ml-2"
+                                                id="file_input_help"
+                                            >
+                                                SVG, PNG, or JPG.
+                                            </p>
+                                        </Row>
+                                        <Row className='my-3 justify-content-center'>
+                                            <Button onClick={onAdd} className='w-auto' variant="primary" type="submit" style={{ fontSize: '1rem' }}>
+                                                Add
+                                            </Button>
+                                        </Row>
+                                    </Col>
+                                </Row>
+                            </Container>
+                        </Modal.Body>
+                    </Modal>
+
+                    {/* MODAL FOR EDIT */}
+                    <Modal
+                        show={modalEdit}
+                        onHide={() => setModalEdit(false)}
+                        backdrop="static"
+                        keyboard={false}
+                    >
+                        <Modal.Header closeButton>
+                            <Modal.Title>Edit Driver</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <Container>
+                                <Row className='justify-content-center'>
+                                    <Col lg="10">
+                                        <Row className='my-2'>
+                                            <label htmlFor="exampleInputEmail1">Driver Name</label>
+                                            <input type="text" name='driver_name' value={driver_name} onChange={e => { onChange(e) }} className="form-control" id="exampleInputEmail1" placeholder="Name" />
+                                        </Row>
+                                        <Row>
+                                            <label htmlFor="exampleInputEmail1">Phone Number</label>
+                                            <input type="text" name='phone_number' value={phone_number} onChange={e => { onChange(e) }} className="form-control" id="exampleInputEmail1" placeholder="Phone" />
+                                        </Row>
+                                        <Row className='my-2'>
+                                            <label
+                                                className="block text-gray-700 text-md font-bold mb-2 ml-2"
+                                                htmlFor="image"
+                                            >
+                                                ID Card
+                                            </label>
+                                            <input
+                                                id="image"
+                                                onChange={(e) => setImageCardId(e.target.files ? e.target.files[0] : null)}
+                                                className="block w-full text-md text-white bg-gray-800 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 ml-2"
+                                                type="file"
+                                            />
+                                            <p
+                                                className="mt-1 text-sm text-gray-500 ml-2"
+                                                id="file_input_help"
+                                            >
+                                                SVG, PNG, or JPG.
+                                            </p>
+                                        </Row>
+                                        <Row className='my-2'>
+                                            <label
+                                                className="block text-gray-700 text-md font-bold mb-2 ml-2"
+                                                htmlFor="image"
+                                            >
+                                                Driver License
+                                            </label>
+                                            <input
+                                                id="image"
+                                                onChange={(e) => setImageLicense(e.target.files ? e.target.files[0] : null)}
+                                                className="block w-full text-md text-white bg-gray-800 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 ml-2"
+                                                type="file"
+                                            />
+                                            <p
+                                                className="mt-1 text-sm text-gray-500 ml-2"
+                                                id="file_input_help"
+                                            >
+                                                SVG, PNG, or JPG.
+                                            </p>
+                                        </Row>
+                                        <Row className='my-3 justify-content-center'>
+                                            <Button onClick={onAdd} className='w-auto' variant="primary" type="submit" style={{ fontSize: '1rem' }}>
+                                                Add
+                                            </Button>
+                                        </Row>
+                                    </Col>
+                                </Row>
+                            </Container>
+                        </Modal.Body>
+                    </Modal>
+
+                    {/* MODAL FOR Display */}
+                    <Modal
+                        show={modalDisplay}
+                        onHide={() => setModalDisplay(false)}
+                        backdrop="static"
+                        keyboard={false}
+                    >
+                        <Modal.Header closeButton>
+                            <Modal.Title>Display Driver</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <Container>
+                                <Row className='justify-content-center'>
+                                    <Col lg="10">
+                                        <Row className='my-2'>
+                                            <h3>Name : {driver_name}</h3>
+                                        </Row>
+                                        <Row>
+                                            <h3>Phone : {phone_number}</h3>
+                                        </Row>
+                                        <Row className='my-2'>
+                                            <h3>ID Card</h3>
+                                            <img src={id_card} className="img-fluid" alt="Responsive image"></img>
+                                        </Row>
+                                        <Row className='my-2'>
+                                            <h3>Driver License</h3>
+                                            <img src={driver_license} className="img-fluid" alt="Responsive image"></img>
+                                        </Row>
+                                        <Row className='my-3 justify-content-center'>
+                                            <Button onClick={onAdd} className='w-auto' variant="primary" type="submit" style={{ fontSize: '1rem' }}>
+                                                Add
+                                            </Button>
+                                        </Row>
+                                    </Col>
+                                </Row>
+                            </Container>
+                        </Modal.Body>
+                    </Modal>
+
                 </div>
             </header>
             <Footer />
@@ -109,8 +385,8 @@ const dummyDrivers: Driver[] = [
         created_at: '2022-08-10T00:00:00Z',
         driver_name: 'budi',
         phone_number: '087743872841',
-        id_card: "",
-        driver_license: "",
+        id_card: "https://iskconofescondido.com/wp-content/uploads/2019/03/FAKE-KTP.jpg",
+        driver_license: "https://i.pinimg.com/originals/7f/7f/68/7f7f68a2ae2a33c4c67d10234cc7bb37.jpg",
         status: true
     },
     {
@@ -118,8 +394,8 @@ const dummyDrivers: Driver[] = [
         created_at: '2022-08-10T00:00:00Z',
         driver_name: 'joko',
         phone_number: '087743876801',
-        id_card: "",
-        driver_license: "",
+        id_card: "https://iskconofescondido.com/wp-content/uploads/2019/03/FAKE-KTP.jpg",
+        driver_license: "https://i.pinimg.com/originals/7f/7f/68/7f7f68a2ae2a33c4c67d10234cc7bb37.jpg",
         status: true
     },
     {
@@ -127,8 +403,8 @@ const dummyDrivers: Driver[] = [
         created_at: '2022-08-10T00:00:00Z',
         driver_name: 'andi',
         phone_number: '087743972801',
-        id_card: "",
-        driver_license: "",
+        id_card: "https://iskconofescondido.com/wp-content/uploads/2019/03/FAKE-KTP.jpg",
+        driver_license: "https://i.pinimg.com/originals/7f/7f/68/7f7f68a2ae2a33c4c67d10234cc7bb37.jpg",
         status: true
     },
     {
@@ -136,8 +412,8 @@ const dummyDrivers: Driver[] = [
         created_at: '2022-08-10T00:00:00Z',
         driver_name: 'siti',
         phone_number: '087740872801',
-        id_card: "",
-        driver_license: "",
+        id_card: "https://iskconofescondido.com/wp-content/uploads/2019/03/FAKE-KTP.jpg",
+        driver_license: "https://i.pinimg.com/originals/7f/7f/68/7f7f68a2ae2a33c4c67d10234cc7bb37.jpg",
         status: true
     },
     {
@@ -145,8 +421,8 @@ const dummyDrivers: Driver[] = [
         created_at: '2022-08-10T00:00:00Z',
         driver_name: 'dina',
         phone_number: '087233872801',
-        id_card: "",
-        driver_license: "",
+        id_card: "https://iskconofescondido.com/wp-content/uploads/2019/03/FAKE-KTP.jpg",
+        driver_license: "https://i.pinimg.com/originals/7f/7f/68/7f7f68a2ae2a33c4c67d10234cc7bb37.jpg",
         status: false
     }
 
