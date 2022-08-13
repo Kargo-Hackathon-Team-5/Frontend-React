@@ -33,6 +33,7 @@ const Drivers = (): JSX.Element => {
     const [drivers, setDrivers] = useState<Driver[]>([]);
     const [filteredDrivers, setFilteredDrivers] = useState<Driver[]>([]);
     const [dropdown, setDropdown] = useState<string>('Update');
+
     const [modalAdd, setModalAdd] = useState<boolean>(false);
     const [modalEdit, setModalEdit] = useState<boolean>(false);
     const [modalDisplay, setModalDisplay] = useState<boolean>(false);
@@ -319,7 +320,7 @@ const Drivers = (): JSX.Element => {
                                             </p>
                                         </Row>
                                         <Row className='my-3 justify-content-center'>
-                                            <Button onClick={onAdd} className='w-auto' variant="primary" type="submit" style={{ fontSize: '1rem' }}>
+                                            <Button onClick={onEdit} className='w-auto' variant="primary" type="submit" style={{ fontSize: '1rem' }}>
                                                 Add
                                             </Button>
                                         </Row>
@@ -356,11 +357,6 @@ const Drivers = (): JSX.Element => {
                                         <Row className='my-2'>
                                             <h3>Driver License</h3>
                                             <img src={driver_license} className="img-fluid" alt="Responsive image"></img>
-                                        </Row>
-                                        <Row className='my-3 justify-content-center'>
-                                            <Button onClick={onAdd} className='w-auto' variant="primary" type="submit" style={{ fontSize: '1rem' }}>
-                                                Add
-                                            </Button>
                                         </Row>
                                     </Col>
                                 </Row>
