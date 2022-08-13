@@ -3,6 +3,8 @@ import Footer from '../../Footer';
 import { useEffect, useState } from 'react';
 import { Button, Col, Container, Dropdown, Modal, Row, Table } from 'react-bootstrap';
 import Moment from 'react-moment';
+import axios from 'axios';
+import moment from 'moment';
 
 const backStyle = {
     backgroundImage: "url('https://thumbs.dreamstime.com/b/american-style-truck-freeway-pulling-load-transportation-theme-road-cars-174771780.jpg')",
@@ -91,10 +93,39 @@ const Shipments = (): JSX.Element => {
         }
     }
 
+    const loadData = async () => {
+        try {
+            const resp = await axios.get('http://localhost:5000/api/shipment');
+            const newShipments = resp.data.data
+            console.log(newShipments);
+
+            const matchedShipments = newShipments.map((x: any) => (
+                {
+                    id: x.id,
+                    loading_date: moment(x.loading_date).format("YYYY-MM-DD"),
+                    status: x.status,
+                    truck_license_number: x.truck.plate_number,
+                    driver_name: x.driver.name,
+                    origin: x.origin,
+                    destination: x.destination,
+
+                }
+            ));
+            setShipments(matchedShipments);
+            setFilteredShipments(matchedShipments)
+        }
+        catch (e: any) {
+            console.error("Error Fetching", e.message);
+
+            setShipments(dummyShipments);
+            setFilteredShipments(dummyShipments)
+        }
+    }
+
     useEffect(() => {
-        setShipments(dummyShipments)
-        setFilteredShipments(dummyShipments)
-    }, []);
+        loadData()
+
+    }, [])
 
     const onClickModal = (shipment: null | Shipment, target: string) => {
         if (shipment) {
@@ -160,8 +191,8 @@ const Shipments = (): JSX.Element => {
     return (
         <>
             <TopNavBar type='shipper' />
-            <header className="App-header w-100 vh-100" style={backStyle}>
-                <div className='h-75 w-75 bg-light rounded'>
+            <header className="App-header w-100 min-vh-100" style={backStyle}>
+                <div className='h-75 w-75 bg-light rounded my-10'>
                     <h2 className='py-2 text-dark'>  Shipments </h2>
                     <hr />
                     <Row className='justify-content-end my-4'>
@@ -172,7 +203,7 @@ const Shipments = (): JSX.Element => {
                         </Col>
                         <Col lg={5}>
                             <div className="form-group w-50 mx-auto mt-2">
-                                <input type="text" onChange={onSearchChange} value={search} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Search" />
+                                <input type="text" onChange={e => onSearchChange(e)} value={search} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Search" />
                             </div>
                         </Col>
                     </Row>

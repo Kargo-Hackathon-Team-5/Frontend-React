@@ -13,8 +13,6 @@ const backStyle = {
     backgroundSize: "cover",
 };
 
-
-
 interface Driver {
     id: string;
     created_at: string;
@@ -96,6 +94,8 @@ const Drivers = (): JSX.Element => {
             driver_license: 'https://i.pinimg.com/originals/7f/7f/68/7f7f68a2ae2a33c4c67d10234cc7bb37.jpg',
             status: true
         }));
+
+        setModalAdd(false);
     }
 
     const onEdit = () => {
@@ -112,6 +112,8 @@ const Drivers = (): JSX.Element => {
             driver_license: 'https://i.pinimg.com/originals/7f/7f/68/7f7f68a2ae2a33c4c67d10234cc7bb37.jpg',
             status: true
         }));
+
+        setModalEdit(false);
     }
 
     const loadData = async () => {
