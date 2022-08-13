@@ -1,5 +1,7 @@
 import TopNavBar from '../../Navbar';
 import Footer from '../../Footer';
+import { useState } from 'react';
+import { Col, Container, Dropdown, Row, Table } from 'react-bootstrap';
 
 const backStyle = {
     backgroundImage: "url('https://thumbs.dreamstime.com/b/american-style-truck-freeway-pulling-load-transportation-theme-road-cars-174771780.jpg')",
@@ -56,7 +58,8 @@ const statuses = [
 
 
 const Shipments = (): JSX.Element => {
-
+    const [dropdown, setDropdown] = useState<string>('Update');
+    const [modal_detail, setModalDetail] = useState<boolean>(false);
     return (
         <>
             <TopNavBar type='shipper' />
@@ -64,7 +67,49 @@ const Shipments = (): JSX.Element => {
                 <div className='h-75 w-75 bg-light rounded'>
                     <h2 className='py-2 text-dark'>  Shipments </h2>
                     <hr />
+                    <Container>
+                        <Row>
+                            <Col lg="12">
+                                <Table striped bordered hover size='sm'>
+                                    <thead>
+                                        <tr>
+                                            <th>License Number</th>
+                                            <th>Truck Type</th>
+                                            <th>Plate Type</th>
+                                            <th>Production Year</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td onClick={() => setModalDetail(true)} style={{ cursor: "pointer" }}>L 1234 VO</td>
+                                            <td>Container</td>
+                                            <td>Yellow</td>
+                                            <td>2022</td>
+                                            <td>
+                                                Active
+                                            </td>
+                                            <td>
+                                                <Dropdown>
+                                                    <Dropdown.Toggle variant="secondary" id="dropdown-basic">
+                                                        {dropdown}
+                                                    </Dropdown.Toggle>
+
+                                                    <Dropdown.Menu>
+                                                        <Dropdown.Item onClick={() => setDropdown('Update')}>Update</Dropdown.Item>
+                                                        <Dropdown.Item onClick={() => setDropdown('Add')}>Add</Dropdown.Item>
+                                                    </Dropdown.Menu>
+                                                </Dropdown>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </Table>
+                            </Col>
+                        </Row>
+                    </Container>
                 </div>
+
             </header>
             <Footer />
         </>

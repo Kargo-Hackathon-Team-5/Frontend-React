@@ -1,6 +1,7 @@
 import TopNavBar from '../../Navbar';
 import Footer from '../../Footer';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { Button, Col, Container, Dropdown, Row, Table } from 'react-bootstrap';
 
 const backStyle = {
     backgroundImage: "url('https://thumbs.dreamstime.com/b/american-style-truck-freeway-pulling-load-transportation-theme-road-cars-174771780.jpg')",
@@ -29,7 +30,15 @@ const Drivers = (): JSX.Element => {
         setSearch(e.target.value)
     };
     const [drivers, setDrivers] = useState<Driver[]>([]);
+    const [dropdown, setDropdown] = useState<string>('Update');
+    const [modal_detail, setModalDetail] = useState<boolean>(false);
 
+    const onClick = () => {
+        console.log("Update");
+    }
+    useEffect(() => {
+        setDrivers(dummyDrivers);
+    }, [])
     return (
         <>
             <TopNavBar type='transporter' />
@@ -37,9 +46,46 @@ const Drivers = (): JSX.Element => {
                 <div className='h-75 w-75 bg-light rounded'>
                     <h2 className='py-2 text-dark'>  Drivers </h2>
                     <hr />
-                    <div className="form-group w-25 mx-auto">
+                    <div className="form-group w-25 mx-auto my-4">
                         <input type="text" onChange={onSearchChange} value={search} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Search" />
                     </div>
+                    <Container style={{ fontSize: '1.3rem' }}>
+                        <Row>
+                            <Col lg="12">
+                                <Table striped bordered hover size='sm'>
+                                    <thead>
+                                        <tr>
+                                            <th>driver Name</th>
+                                            <th>Phone Number</th>
+                                            <th>Created At</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {drivers && drivers.map(x => (<>
+
+                                            <tr>
+                                                <td onClick={() => setModalDetail(true)} style={{ cursor: "pointer" }}>{x.driver_name}</td>
+                                                <td>{x.phone_number}</td>
+                                                <td>{x.created_at}</td>
+                                                <td>
+                                                    {x.status ? 'Active' : 'Inactive'}
+                                                </td>
+                                                <td>
+                                                    <Button onClick={onClick} className='w-auto' variant="warning" type="submit" style={{ fontSize: '1rem' }}>
+                                                        Update
+                                                    </Button>
+                                                </td>
+                                            </tr>
+
+                                        </>))}
+
+                                    </tbody>
+                                </Table>
+                            </Col>
+                        </Row>
+                    </Container>
                 </div>
             </header>
             <Footer />
@@ -57,8 +103,8 @@ const dummyDrivers: Driver[] = [
         created_at: '2022-08-10T00:00:00Z',
         driver_name: 'budi',
         phone_number: '087743872841',
-        id_card: "3525016501830001",
-        driver_license: "B 2131 XMS",
+        id_card: "",
+        driver_license: "",
         status: true
     },
     {
@@ -66,8 +112,8 @@ const dummyDrivers: Driver[] = [
         created_at: '2022-08-10T00:00:00Z',
         driver_name: 'joko',
         phone_number: '087743876801',
-        id_card: "3525016501830002",
-        driver_license: "B 123 SD",
+        id_card: "",
+        driver_license: "",
         status: true
     },
     {
@@ -75,8 +121,8 @@ const dummyDrivers: Driver[] = [
         created_at: '2022-08-10T00:00:00Z',
         driver_name: 'andi',
         phone_number: '087743972801',
-        id_card: "3525016501830003",
-        driver_license: "B 523 XZC",
+        id_card: "",
+        driver_license: "",
         status: true
     },
     {
@@ -84,8 +130,8 @@ const dummyDrivers: Driver[] = [
         created_at: '2022-08-10T00:00:00Z',
         driver_name: 'siti',
         phone_number: '087740872801',
-        id_card: "3525016501830004",
-        driver_license: "B 888 HFD",
+        id_card: "",
+        driver_license: "",
         status: true
     },
     {
@@ -93,9 +139,9 @@ const dummyDrivers: Driver[] = [
         created_at: '2022-08-10T00:00:00Z',
         driver_name: 'dina',
         phone_number: '087233872801',
-        id_card: "3525016501830005",
-        driver_license: "B 773 JKH",
-        status: true
+        id_card: "",
+        driver_license: "",
+        status: false
     }
 
 ]
