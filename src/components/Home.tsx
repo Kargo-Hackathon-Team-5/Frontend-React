@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
-import { Row } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import Spinner from 'react-bootstrap/Spinner';
 import Footer from './Footer';
 import TopNavBar from './Navbar';
@@ -16,15 +16,11 @@ const backStyle = {
 
 
 
-<<<<<<< HEAD
+
 interface Check {
     transporter: boolean;
     shipper: boolean;
 }
-=======
-const Home = (): JSX.Element => {
-    const [loading] = useState<boolean>(false)
->>>>>>> bc189013a9d50868e760d0a3eb56ff72055ab9fc
 
 const Home = (): JSX.Element => {
     const navigate = useNavigate();
