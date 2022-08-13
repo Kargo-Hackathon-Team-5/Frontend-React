@@ -118,7 +118,7 @@ const Drivers = (): JSX.Element => {
 
     const loadData = async () => {
         try {
-            const resp = await axios.get('http://localhost:5000/api/driver');
+            const resp = await axios.get('http://localhost:3001/api/driver');
             const newDrivers = resp.data.data
             console.log(newDrivers);
 
