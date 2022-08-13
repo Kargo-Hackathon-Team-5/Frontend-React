@@ -277,77 +277,41 @@ const Trucks = (): JSX.Element => {
                     </Modal>
 
                     {/* MODAL FOR EDIT */}
-                    {/* <Modal
+                    <Modal
                         show={modalEdit}
                         onHide={() => setModalEdit(false)}
                         backdrop="static"
                         keyboard={false}
                     >
                         <Modal.Header closeButton>
-                            <Modal.Title>Edit Driver</Modal.Title>
+                            <Modal.Title>Edit Truck</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
                             <Container>
                                 <Row className='justify-content-center'>
                                     <Col lg="10">
                                         <Row className='my-2'>
-                                            <label htmlFor="exampleInputEmail1">Driver Name</label>
-                                            <input type="text" name='driver_name' value={driver_name} onChange={e => { onChange(e) }} className="form-control" id="exampleInputEmail1" placeholder="Name" />
+                                            <label htmlFor="exampleInputEmail1">Plate Number</label>
+                                            <input type="text" name='plate_number' value={plate_number} onChange={e => { onChange(e) }} className="form-control" id="exampleInputEmail1" placeholder="Plate Number" />
                                         </Row>
                                         <Row>
-                                            <label htmlFor="exampleInputEmail1">Phone Number</label>
-                                            <input type="text" name='phone_number' value={phone_number} onChange={e => { onChange(e) }} className="form-control" id="exampleInputEmail1" placeholder="Phone" />
+                                            <label htmlFor="exampleInputEmail1">License Type</label>
+                                            <input type="text" name='license_type' value={license_type} onChange={e => { onChange(e) }} className="form-control" id="exampleInputEmail1" placeholder="License Type" />
                                         </Row>
-                                        <Row className='my-2'>
-                                            <label
-                                                className="block text-gray-700 text-md font-bold mb-2 ml-2"
-                                                htmlFor="image"
-                                            >
-                                                ID Card
-                                            </label>
-                                            <input
-                                                id="image"
-                                                onChange={(e) => setImageCardId(e.target.files ? e.target.files[0] : null)}
-                                                className="block w-full text-md text-white bg-gray-800 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 ml-2"
-                                                type="file"
-                                            />
-                                            <p
-                                                className="mt-1 text-sm text-gray-500 ml-2"
-                                                id="file_input_help"
-                                            >
-                                                SVG, PNG, or JPG.
-                                            </p>
-                                        </Row>
-                                        <Row className='my-2'>
-                                            <label
-                                                className="block text-gray-700 text-md font-bold mb-2 ml-2"
-                                                htmlFor="image"
-                                            >
-                                                Driver License
-                                            </label>
-                                            <input
-                                                id="image"
-                                                onChange={(e) => setImageLicense(e.target.files ? e.target.files[0] : null)}
-                                                className="block w-full text-md text-white bg-gray-800 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 ml-2"
-                                                type="file"
-                                            />
-                                            <p
-                                                className="mt-1 text-sm text-gray-500 ml-2"
-                                                id="file_input_help"
-                                            >
-                                                SVG, PNG, or JPG.
-                                            </p>
-                                        </Row>
-                                        <Row className='my-3 justify-content-center'>
-                                            <Button onClick={onAdd} className='w-auto' variant="primary" type="submit" style={{ fontSize: '1rem' }}>
-                                                Add
+                                        <Row>
+                                            <label htmlFor="exampleInputEmail1">Truck Type</label>
+                                            <input type="text" name='truck_type' value={truck_type} onChange={e => { onChange(e) }} className="form-control" id="exampleInputEmail1" placeholder="Truck Type" />
+                                        </Row>   
+                                        <Row className="mt-5">
+                                            <Button className='w-auto' variant="primary" type="submit" style={{ fontSize: '1rem' }}>
+                                                Save
                                             </Button>
-                                        </Row>
+                                        </Row>                                     
                                     </Col>
                                 </Row>
                             </Container>
                         </Modal.Body>
-                    </Modal> */}
+                    </Modal>
 
                     {/* MODAL FOR Display */}
                     <Modal
