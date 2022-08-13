@@ -5,6 +5,7 @@ import { Col, Row } from 'react-bootstrap';
 import Spinner from 'react-bootstrap/Spinner';
 import Footer from './Footer';
 import TopNavBar from './Navbar';
+import { useNavigate } from "react-router";
 
 const backStyle = {
     backgroundImage: "url('https://thumbs.dreamstime.com/b/american-style-truck-freeway-pulling-load-transportation-theme-road-cars-174771780.jpg')",
@@ -13,9 +14,6 @@ const backStyle = {
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
 };
-
-
-
 
 interface Check {
     transporter: boolean;
