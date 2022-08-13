@@ -3,6 +3,7 @@ import Footer from '../../Footer';
 import { useEffect, useState } from 'react';
 import { Button, Col, Container, Dropdown, Modal, Row, Table } from 'react-bootstrap';
 import Moment from 'react-moment';
+import axios from 'axios';
 
 const backStyle = {
     backgroundImage: "url('https://thumbs.dreamstime.com/b/american-style-truck-freeway-pulling-load-transportation-theme-road-cars-174771780.jpg')",
@@ -69,7 +70,6 @@ const Drivers = (): JSX.Element => {
         }
     }
 
-
     const [formData, setFormData] = useState<Driver>({
         id: '',
         created_at: '',
@@ -114,9 +114,38 @@ const Drivers = (): JSX.Element => {
         }));
     }
 
+    const loadData = async () => {
+        try {
+            const resp = await axios.get('http://localhost:5000/api/driver');
+            const newDrivers = resp.data.data
+            console.log(newDrivers);
+
+            const matchedDrivers = newDrivers.map((x: any) => (
+                {
+                    id: x.id,
+                    created_at: x.createdAt,
+                    driver_name: x.name,
+                    phone_number: x.phone,
+                    id_card: x.id_card,
+                    driver_license: x.license,
+                    status: x.status
+
+                }
+            ));
+            setDrivers(matchedDrivers);
+            setFilteredDrivers(matchedDrivers)
+        }
+        catch (e: any) {
+            console.error("Error Fetching", e.message);
+
+            setDrivers(dummyDrivers);
+            setFilteredDrivers(dummyDrivers)
+        }
+    }
+
     useEffect(() => {
-        setDrivers(dummyDrivers);
-        setFilteredDrivers(dummyDrivers)
+        loadData()
+
     }, [])
     const onChange = (e: any): void => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -124,7 +153,7 @@ const Drivers = (): JSX.Element => {
     return (
         <>
             <TopNavBar type='transporter' />
-            <header className="App-header w-100 vh-100" style={backStyle}>
+            <header className="App-header w-100 min-vh-100" style={backStyle}>
                 <div className='h-75 w-75 bg-light rounded'>
                     <h2 className='py-2 text-dark'>  Drivers </h2>
                     <hr />
