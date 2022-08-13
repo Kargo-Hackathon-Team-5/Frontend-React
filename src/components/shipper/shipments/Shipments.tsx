@@ -95,7 +95,7 @@ const Shipments = (): JSX.Element => {
 
     const loadData = async () => {
         try {
-            const resp = await axios.get('http://localhost:5000/api/shipment');
+            const resp = await axios.get('http://localhost:3001/api/shipment');
             const newShipments = resp.data.data
             console.log(newShipments);
 
