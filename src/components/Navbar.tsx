@@ -12,13 +12,13 @@ const TopNavBar = ({ type } : TopNavProps): JSX.Element => {
             <Container className="justify-content-start">
                 <Navbar.Brand href="/">Kargo Excellerate</Navbar.Brand>
                 <Nav className="me-10">
-                    {type == 'transporter' &&
+                    {type === 'transporter' &&
                         <>
                             <Nav.Link href="/transporter/trucks">Trucks</Nav.Link>
                             <Nav.Link href="/transporter/drivers">Drivers</Nav.Link>
                         </>
                     }
-                    {type == 'shipper' &&
+                    {type === 'shipper' &&
                         <Nav.Link href="/shipper/shipments">Shipments</Nav.Link>
 
                     }

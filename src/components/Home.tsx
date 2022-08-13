@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
-import { Col, Form, Row } from 'react-bootstrap';
-import Spinner from 'react-bootstrap/Spinner'; import { useNavigate } from "react-router";
+import { Row } from 'react-bootstrap';
+import Spinner from 'react-bootstrap/Spinner';
 import Footer from './Footer';
 import TopNavBar from './Navbar';
 
@@ -17,7 +17,7 @@ const backStyle = {
 
 
 const Home = (): JSX.Element => {
-    const [loading, setLoading] = useState<boolean>(false)
+    const [loading] = useState<boolean>(false)
 
     const onClick = async (e: any) => {
         e.preventDefault()
